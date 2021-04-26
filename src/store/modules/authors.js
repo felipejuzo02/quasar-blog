@@ -44,7 +44,7 @@ const actions = {
     } catch {}
   },
 
-  async fecthSpecificAuthor ({ commit }, id) {
+  async fecthSpecificAuthor (content, id) {
     try {
       const { data } = await axios({
         method: 'GET',
