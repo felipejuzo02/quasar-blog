@@ -55,7 +55,7 @@ const actions = {
     } catch {}
   },
 
-  async editAuthor ({ commit }, author) {
+  async editAuthor (content, author) {
     try {
       await axios({
         method: 'PUT',
