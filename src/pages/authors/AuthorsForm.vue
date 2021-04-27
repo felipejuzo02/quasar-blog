@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import { validateRequiredFields, validateEmailFields } from 'helpers'
 import modalCancel from 'src/components/modalCancel.vue'
 
@@ -43,7 +43,8 @@ export default {
   methods: {
     ...mapActions({
       editAuthor: 'authors/editAuthor',
-      addAuthors: 'authors/addAuthors'
+      addAuthor: 'authors/addAuthor',
+      fecthAuthor: 'authors/fecthAuthor'
     }),
 
     validateRequiredFields,
@@ -56,7 +57,7 @@ export default {
           name: this.name,
           email: this.email
         },
-        index: this.$route.params.id
+        id: this.authorId
       }
       this.editAuthor(author)
 
@@ -64,16 +65,18 @@ export default {
         message: 'Autor editado com sucesso!',
         type: 'positive'
       })
+
       this.$router.push({ name: 'AuthorsList' })
     },
 
-    setInputValues () {
-      this.name = this.authors[this.authorId].name
-      this.email = this.authors[this.authorId].email
+    async setInputValues () {
+      const author = await this.fecthAuthor(this.authorId)
+      this.name = author.name
+      this.email = author.email
     },
 
     addAuthorToList () {
-      this.addAuthors({ name: this.name, email: this.email })
+      this.addAuthor({ name: this.name, email: this.email })
 
       this.$q.notify({
         message: 'Autor criado com sucesso!',
@@ -88,12 +91,8 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      authors: 'authors/authorsList'
-    }),
-
     authorId () {
-      return this.$route.params.id
+      return Number(this.$route.params.id)
     },
 
     isCreate () {
