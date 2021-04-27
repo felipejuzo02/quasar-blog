@@ -17,7 +17,7 @@
       </div>
       <div class="full-width">
         <q-list v-if="authorsList.length" bordered class="rounded-borders q-mb-xs">
-          <div class="flex row q-px-md q-py-sm bg-primary text-white">
+          <div class="row q-px-md q-py-sm bg-primary text-white">
             <div class="q-mb-none col">Nome</div>
             <div class="q-mb-none col">E-mail</div>
           </div>
