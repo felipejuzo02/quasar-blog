@@ -13,7 +13,7 @@
         </div>
 
         <div v-if="!isCreate">
-          <q-btn flat color="negative" icon="delete" label="Deletar autor" @click="this.confirmDelete" />
+          <q-btn flat color="negative" icon="delete" label="Deletar autor" @click="confirmDelete" />
           <q-dialog v-model="confirmDeleteData" persistent>
             <q-card>
               <q-card-section class="row items-center">
@@ -21,7 +21,7 @@
               </q-card-section>
               <q-card-actions align="center">
                 <q-btn flat label="Cancelar" color="primary" v-close-popup />
-                <q-btn label="Confirmar" color="primary" v-close-popup @click="this.deleteAuthor" />
+                <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteListAuthor" />
               </q-card-actions>
             </q-card>
           </q-dialog>
@@ -62,7 +62,7 @@ export default {
       editAuthor: 'authors/editAuthor',
       addAuthor: 'authors/addAuthor',
       fecthAuthor: 'authors/fecthAuthor',
-      removeAuthor: 'authors/removeAuthor'
+      deleteAuthor: 'authors/deleteAuthor'
     }),
 
     validateRequiredFields,
@@ -91,8 +91,8 @@ export default {
       this.$router.push({ name: 'AuthorsList' })
     },
 
-    deleteAuthor () {
-      this.removeAuthor(this.authorId)
+    deleteListAuthor () {
+      this.deleteAuthor(this.authorId)
       this.$q.notify({
         message: 'Autor excluido com sucesso!',
         type: 'positive'

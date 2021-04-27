@@ -43,7 +43,7 @@
 
                           <q-card-actions align="center">
                             <q-btn flat label="Cancelar" color="primary" v-close-popup />
-                            <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteAuthor(author.id)" />
+                            <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteListAuthor(author.id)" />
                           </q-card-actions>
                         </q-card>
                       </q-dialog>
@@ -82,12 +82,12 @@ export default {
 
   methods: {
     ...mapActions({
-      removeAuthor: 'authors/removeAuthor',
+      deleteAuthor: 'authors/deleteAuthor',
       fetchAuthors: 'authors/fecthAuthors'
     }),
 
-    deleteAuthor (id) {
-      this.removeAuthor(id)
+    deleteListAuthor (id) {
+      this.deleteAuthor(id)
       this.$q.notify({
         message: 'Autor excluido com sucesso!',
         type: 'positive'

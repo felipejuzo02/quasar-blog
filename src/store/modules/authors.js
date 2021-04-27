@@ -36,7 +36,7 @@ const actions = {
     } catch {}
   },
 
-  async fecthAuthor (content, id) {
+  async fecthAuthor (context, id) {
     try {
       const { data } = await axios({
         method: 'GET',
@@ -47,7 +47,7 @@ const actions = {
     } catch {}
   },
 
-  async editAuthor (content, author) {
+  async editAuthor (context, author) {
     try {
       await axios({
         method: 'PUT',
@@ -57,7 +57,7 @@ const actions = {
     } catch {}
   },
 
-  async removeAuthor (content, id) {
+  async deleteAuthor (context, id) {
     try {
       await axios({
         method: 'DELETE',
