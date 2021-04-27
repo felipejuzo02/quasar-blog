@@ -34,7 +34,7 @@ const actions = {
     } catch {}
   },
 
-  async sendAuthors (context, data) {
+  async addAuthor (context, data) {
     try {
       await axios({
         method: 'POST',
@@ -44,7 +44,7 @@ const actions = {
     } catch {}
   },
 
-  async fecthSpecificAuthor (content, id) {
+  async fecthAuthor (content, id) {
     try {
       const { data } = await axios({
         method: 'GET',

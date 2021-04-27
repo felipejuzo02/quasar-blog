@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import { validateRequiredFields, validateEmailFields } from 'helpers'
 import modalCancel from 'src/components/modalCancel.vue'
 
@@ -43,8 +43,8 @@ export default {
   methods: {
     ...mapActions({
       editAuthor: 'authors/editAuthor',
-      sendAuthors: 'authors/sendAuthors',
-      fecthSpecificAuthor: 'authors/fecthSpecificAuthor'
+      addAuthor: 'authors/addAuthor',
+      fecthAuthor: 'authors/fecthAuthor'
     }),
 
     validateRequiredFields,
@@ -70,13 +70,13 @@ export default {
     },
 
     async setInputValues () {
-      const author = await this.fecthSpecificAuthor(this.authorId)
+      const author = await this.fecthAuthor(this.authorId)
       this.name = author.name
       this.email = author.email
     },
 
     addAuthorToList () {
-      this.sendAuthors({ name: this.name, email: this.email })
+      this.addAuthor({ name: this.name, email: this.email })
 
       this.$q.notify({
         message: 'Autor criado com sucesso!',
@@ -91,11 +91,6 @@ export default {
   },
 
   computed: {
-    ...mapGetters({
-      authors: 'authors/authorsList',
-      authorValue: 'authors/authorValue'
-    }),
-
     authorId () {
       return Number(this.$route.params.id)
     },

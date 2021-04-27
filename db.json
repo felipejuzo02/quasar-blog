@@ -14,24 +14,29 @@
   ],
   "authors": [
     {
-      "name": "Davi Limaaa",
+      "name": "Davi Lima",
       "email": "daviscript@hotmail.com",
       "id": 1
     },
     {
-      "name": "Fabio",
-      "email": "alou@hotmail.com",
+      "name": "Cassim",
+      "email": "cassim@hotmail.com",
       "id": 2
     },
     {
       "name": "Monica Domingues",
-      "email": "Alourober@hot.com",
+      "email": "monicadomingues@hotmail.com",
       "id": 3
     },
     {
-      "name": "Marcos Cardoso",
-      "email": "marcos@hotmail.com",
+      "name": "Cebolinha",
+      "email": "cebolacomlimao@hotmail.com",
       "id": 4
+    },
+    {
+      "name": "Pedro",
+      "email": "pedro@hotmail.com",
+      "id": 5
     }
   ]
 }
