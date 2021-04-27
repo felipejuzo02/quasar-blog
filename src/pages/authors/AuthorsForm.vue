@@ -11,7 +11,23 @@
             </q-breadcrumbs>
           </div>
         </div>
+
+        <div v-if="!isCreate">
+          <q-btn flat color="negative" icon="delete" label="Deletar autor" @click="this.confirmDelete" />
+          <q-dialog v-model="confirmDeleteData" persistent>
+            <q-card>
+              <q-card-section class="row items-center">
+                <span class="q-ml-sm">Deseja mesmo excluir o autor?</span>
+              </q-card-section>
+              <q-card-actions align="center">
+                <q-btn flat label="Cancelar" color="primary" v-close-popup />
+                <q-btn label="Confirmar" color="primary" v-close-popup @click="this.deleteAuthor" />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+        </div>
       </div>
+
       <div class="q-my-lg relative-position">
         <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" :rules="[ validateRequiredFields ]" />
         <q-input outlined v-model="email" label="E-mail" :rules="[ validateEmailFields ]" />
@@ -36,7 +52,8 @@ export default {
   data () {
     return {
       name: '',
-      email: ''
+      email: '',
+      confirmDeleteData: false
     }
   },
 
@@ -44,12 +61,17 @@ export default {
     ...mapActions({
       editAuthor: 'authors/editAuthor',
       addAuthor: 'authors/addAuthor',
-      fecthAuthor: 'authors/fecthAuthor'
+      fecthAuthor: 'authors/fecthAuthor',
+      removeAuthor: 'authors/removeAuthor'
     }),
 
     validateRequiredFields,
 
     validateEmailFields,
+
+    confirmDelete () {
+      this.confirmDeleteData = true
+    },
 
     editAuthorInformation () {
       const author = {
@@ -63,6 +85,16 @@ export default {
 
       this.$q.notify({
         message: 'Autor editado com sucesso!',
+        type: 'positive'
+      })
+
+      this.$router.push({ name: 'AuthorsList' })
+    },
+
+    deleteAuthor () {
+      this.removeAuthor(this.authorId)
+      this.$q.notify({
+        message: 'Autor excluido com sucesso!',
         type: 'positive'
       })
 

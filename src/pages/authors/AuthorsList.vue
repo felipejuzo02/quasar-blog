@@ -43,7 +43,7 @@
 
                           <q-card-actions align="center">
                             <q-btn flat label="Cancelar" color="primary" v-close-popup />
-                            <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteAuthor(id)" />
+                            <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteAuthor(author.id)" />
                           </q-card-actions>
                         </q-card>
                       </q-dialog>
@@ -92,6 +92,7 @@ export default {
         message: 'Autor excluido com sucesso!',
         type: 'positive'
       })
+      this.fetchAuthors()
     },
 
     confirmDelete () {

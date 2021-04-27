@@ -12,31 +12,5 @@
       "editDate": "18/07/2080"
     }
   ],
-  "authors": [
-    {
-      "name": "Davi Morais",
-      "email": "daviscript@hotmail.com",
-      "id": 1
-    },
-    {
-      "name": "Cassim",
-      "email": "cassim@hotmail.com",
-      "id": 2
-    },
-    {
-      "name": "Monica Domingues",
-      "email": "monicadomingues@hotmail.com",
-      "id": 3
-    },
-    {
-      "name": "Cebolinha",
-      "email": "cebolacomlimao@hotmail.com",
-      "id": 4
-    },
-    {
-      "name": "Pedro",
-      "email": "pedro@hotmail.com",
-      "id": 5
-    }
-  ]
+  "authors": []
 }
