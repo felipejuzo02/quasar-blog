@@ -44,7 +44,7 @@
       <q-editor class="q-my-lg bg-grey-2" v-model="values.mainText" />
 
       <div class="q-my-lg flex">
-        <q-btn :disable="validateForm" color="primary" @click="actionChoose">{{ buttonNameToSave }}</q-btn>
+        <q-btn :disable="validateForm" color="primary" @click="actionChoose">{{ submitButtonLabel }}</q-btn>
         <modal-cancel hasPagination="PostsList" />
       </div>
     </div>
@@ -165,7 +165,7 @@ export default {
       return this.isCreate ? 'Criar Postagem' : 'Editar postagem'
     },
 
-    buttonNameToSave () {
+    submitButtonLabel () {
       return this.isCreate ? 'Criar' : 'Editar'
     },
 
