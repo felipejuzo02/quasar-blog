@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   data () {
@@ -44,16 +44,17 @@ export default {
   },
 
   methods: {
-    setValues () {
-      this.values = this.posts[this.postId]
+    ...mapActions({
+      fetchPost: 'posts/fetchPost'
+    }),
+
+    async setValues () {
+      const post = await this.fetchPost(this.postId)
+      this.values = post
     }
   },
 
   computed: {
-    ...mapGetters({
-      posts: 'posts/postsList'
-    }),
-
     postId () {
       return this.$route.params.id
     }

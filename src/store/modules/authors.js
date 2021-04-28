@@ -11,6 +11,10 @@ const getters = {
 const mutations = {
   fecthAuthors (state, data) {
     state.authors = data
+  },
+
+  deleteAuthor (state, id) {
+    state.authors.splice(id, 1)
   }
 }
 
@@ -57,12 +61,14 @@ const actions = {
     } catch {}
   },
 
-  async deleteAuthor (context, id) {
+  async deleteAuthor ({ commit }, id) {
     try {
       await axios({
         method: 'DELETE',
         url: `authors/${id}`
       })
+
+      commit('deleteAuthor', id)
     } catch {}
   }
 }

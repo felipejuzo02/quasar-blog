@@ -1,5 +1,6 @@
 <template>
-    <q-page class="bg-grey-2 q-pa-lg">
+  <q-page class="bg-grey-2 q-pa-lg">
+    <div class="flex justify-between">
       <div>
         <p class="text-h5 q-mb-xs">{{ definitionOfPageName }}</p>
         <q-breadcrumbs>
@@ -9,29 +10,45 @@
         </q-breadcrumbs>
       </div>
 
-      <div class="q-my-lg">
-        <q-input class="q-mb-md" outlined v-model="values.mainImageURL" label="Insira o link da imagem principal*"
-        :rules="[validateRequiredFields]" />
-        <q-input class="q-mb-md" outlined v-model="values.title" label="Informe o título*"
-        :rules="[validateRequiredFields]" />
-        <q-input class="q-mb-md" outlined v-model="values.shortDescription" label="Informe uma pequena descrição*"
-        :rules="[validateRequiredFields]" />
-
-        <div class="flex items-center q-mb-lg">
-          <q-select class="col q-mr-sm" outlined v-model="values.authorName" :options="authorsOptions"
-          label="Escolha o autor*" :rules="[validateRequiredFields]" />
-          <q-select class="col q-ml-sm" outlined v-model="values.category" :options="values.categoryOptions"
-          label="Informe a categoria da postagem*" :rules="[validateRequiredFields]" />
+      <div v-if="!isCreate">
+          <q-btn flat color="negative" icon="delete" label="Deletar autor" @click="confirmDelete" />
+          <q-dialog v-model="confirmDeleteData" persistent>
+            <q-card>
+              <q-card-section class="row items-center">
+                <span class="q-ml-sm">Deseja mesmo excluir o post?</span>
+              </q-card-section>
+              <q-card-actions align="center">
+                <q-btn flat label="Cancelar" color="primary" v-close-popup />
+                <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteListPost" />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
         </div>
+    </div>
 
-        <q-editor class="q-my-lg bg-grey-2" v-model="values.mainText" />
+    <div class="q-my-lg">
+      <q-input class="q-mb-md" outlined v-model="values.mainImageURL" label="Insira o link da imagem principal*"
+      :rules="[validateRequiredFields]" />
+      <q-input class="q-mb-md" outlined v-model="values.title" label="Informe o título*"
+      :rules="[validateRequiredFields]" />
+      <q-input class="q-mb-md" outlined v-model="values.shortDescription" label="Informe uma pequena descrição*"
+      :rules="[validateRequiredFields]" />
 
-        <div class="q-my-lg flex">
-          <q-btn :disable="validateForm" color="primary" @click="actionChoose">{{ buttonNameToSave }}</q-btn>
-          <modal-cancel hasPagination="PostsList" />
-        </div>
+      <div class="flex items-center q-mb-lg">
+        <q-select class="col q-mr-sm" outlined v-model="values.authorName" :options="authorsOptions"
+        label="Escolha o autor*" :rules="[validateRequiredFields]" />
+        <q-select class="col q-ml-sm" outlined v-model="values.category" :options="values.categoryOptions"
+        label="Informe a categoria da postagem*" :rules="[validateRequiredFields]" />
       </div>
-    </q-page>
+
+      <q-editor class="q-my-lg bg-grey-2" v-model="values.mainText" />
+
+      <div class="q-my-lg flex">
+        <q-btn :disable="validateForm" color="primary" @click="actionChoose">{{ buttonNameToSave }}</q-btn>
+        <modal-cancel hasPagination="PostsList" />
+      </div>
+    </div>
+  </q-page>
 </template>
 
 <script>
@@ -71,25 +88,31 @@ export default {
 
   methods: {
     ...mapActions({
-      removePost: 'posts/removePost',
+      deletePost: 'posts/deletePost',
       editPost: 'posts/editPost',
-      setPost: 'posts/setPost'
+      addPost: 'posts/addPost',
+      fetchPosts: 'posts/fetchPosts',
+      fetchPost: 'posts/fetchPost',
+      fetchAuthors: 'authors/fecthAuthors'
     }),
 
     validateRequiredFields,
 
     formatDateTime,
 
+    confirmDelete () {
+      this.confirmDeleteData = true
+    },
+
     addPostToList () {
       this.values.postDate = formatDateTime()
-
-      this.setPost(this.values)
+      this.addPost(this.values)
+      this.fetchPosts()
 
       this.$q.notify({
         message: 'Post criado com sucesso!',
         type: 'positive'
       })
-
       this.$router.push({ name: 'PostsList' })
     },
 
@@ -97,10 +120,11 @@ export default {
       this.values.editDate = formatDateTime()
       const post = {
         values: this.values,
-        index: this.$route.params.id
+        id: this.postId
       }
 
       this.editPost(post)
+      this.fetchPosts()
 
       this.$q.notify({
         message: 'Post alterado com sucesso!',
@@ -114,19 +138,20 @@ export default {
       this.isCreate ? this.addPostToList() : this.editPostList()
     },
 
-    deletePost () {
-      this.removePost(this.postId)
-
+    async deleteListPost () {
+      await this.deletePost(this.postId)
       this.$q.notify({
         message: 'Post excluido com sucesso!',
         type: 'positive'
       })
 
       this.$router.push({ name: 'PostsList' })
+      this.fetchPosts()
     },
 
-    setInputValues () {
-      this.values = extend(true, {}, this.posts[this.postId])
+    async setInputValues () {
+      const post = await this.fetchPost(this.postId)
+      this.values = extend(true, {}, post)
     }
   },
 
@@ -171,6 +196,7 @@ export default {
     if (!this.isCreate) {
       this.setInputValues()
     }
+    this.fetchAuthors()
   }
 }
 </script>
