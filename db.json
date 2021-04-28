@@ -10,33 +10,18 @@
       "mainText": "Aoba Clayton",
       "postDate": "19/07/2080",
       "editDate": "18/07/2080"
+    },
+    {
+      "id": 2,
+      "mainImageURL": "https://images.ctfassets.net/3mv54pzvptwz/2Tk5dgqIv5CPOf5n63egGl/3dffaaf3cd49acf31c74ddc38c7d79f3/neymar_jr_man_of_the_match_bayern.jpeg",
+      "title": "Clayton",
+      "shortDescription": "Clayton venceu a champions",
+      "authorName": "Roberto",
+      "category": "Esportes",
+      "mainText": "Aoba Clayton",
+      "postDate": "19/07/2080",
+      "editDate": "18/07/2080"
     }
   ],
-  "authors": [
-    {
-      "name": "Davi Morais",
-      "email": "daviscript@hotmail.com",
-      "id": 1
-    },
-    {
-      "name": "Cassim",
-      "email": "cassim@hotmail.com",
-      "id": 2
-    },
-    {
-      "name": "Monica Domingues",
-      "email": "monicadomingues@hotmail.com",
-      "id": 3
-    },
-    {
-      "name": "Cebolinha",
-      "email": "cebolacomlimao@hotmail.com",
-      "id": 4
-    },
-    {
-      "name": "Pedro",
-      "email": "pedro@hotmail.com",
-      "id": 5
-    }
-  ]
+  "authors": []
 }

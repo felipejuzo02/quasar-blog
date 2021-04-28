@@ -9,20 +9,12 @@ const getters = {
 }
 
 const mutations = {
-  removeAuthor (state, index) {
-    state.authors.splice(index, 1)
-  },
-
   fecthAuthors (state, data) {
     state.authors = data
   }
 }
 
 const actions = {
-  removeAuthor ({ commit }, index) {
-    commit('removeAuthor', index)
-  },
-
   async fecthAuthors ({ commit }) {
     try {
       const { data } = await axios({
@@ -44,7 +36,7 @@ const actions = {
     } catch {}
   },
 
-  async fecthAuthor (content, id) {
+  async fecthAuthor (context, id) {
     try {
       const { data } = await axios({
         method: 'GET',
@@ -55,12 +47,21 @@ const actions = {
     } catch {}
   },
 
-  async editAuthor (content, author) {
+  async editAuthor (context, author) {
     try {
       await axios({
         method: 'PUT',
         url: `authors/${author.id}`,
         data: author.values
+      })
+    } catch {}
+  },
+
+  async deleteAuthor (context, id) {
+    try {
+      await axios({
+        method: 'DELETE',
+        url: `authors/${id}`
       })
     } catch {}
   }
