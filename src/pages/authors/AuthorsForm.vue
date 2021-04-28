@@ -62,7 +62,8 @@ export default {
       editAuthor: 'authors/editAuthor',
       addAuthor: 'authors/addAuthor',
       fecthAuthor: 'authors/fecthAuthor',
-      deleteAuthor: 'authors/deleteAuthor'
+      deleteAuthor: 'authors/deleteAuthor',
+      fetchAuthors: 'authors/fecthAuthors'
     }),
 
     validateRequiredFields,
@@ -93,11 +94,12 @@ export default {
 
     deleteListAuthor () {
       this.deleteAuthor(this.authorId)
+      this.fetchAuthors()
+
       this.$q.notify({
         message: 'Autor excluido com sucesso!',
         type: 'positive'
       })
-
       this.$router.push({ name: 'AuthorsList' })
     },
 
@@ -109,6 +111,7 @@ export default {
 
     addAuthorToList () {
       this.addAuthor({ name: this.name, email: this.email })
+      this.fetchAuthors()
 
       this.$q.notify({
         message: 'Autor criado com sucesso!',

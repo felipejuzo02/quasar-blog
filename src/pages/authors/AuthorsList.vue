@@ -86,8 +86,8 @@ export default {
       fetchAuthors: 'authors/fecthAuthors'
     }),
 
-    deleteListAuthor (id) {
-      this.deleteAuthor(id)
+    async deleteListAuthor (id) {
+      await this.deleteAuthor(id)
       this.$q.notify({
         message: 'Autor excluido com sucesso!',
         type: 'positive'
