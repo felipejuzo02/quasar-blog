@@ -11,10 +11,6 @@ const getters = {
 const mutations = {
   fetchPosts (state, data) {
     state.posts = data
-  },
-
-  deletePost (state, id) {
-    state.posts.splice(id, 1)
   }
 }
 

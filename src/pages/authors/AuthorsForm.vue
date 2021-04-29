@@ -31,8 +31,8 @@
 <script>
 import { mapActions } from 'vuex'
 import { validateRequiredFields, validateEmailFields } from 'helpers'
-import modalCancel from 'src/components/modalCancel'
-import modalDelete from 'src/components/modalDelete'
+import modalCancel from 'components/modalCancel'
+import modalDelete from 'components/modalDelete'
 
 export default {
   components: {

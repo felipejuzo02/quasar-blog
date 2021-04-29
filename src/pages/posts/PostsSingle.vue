@@ -44,9 +44,7 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      fetchPost: 'posts/fetchPost'
-    }),
+    ...mapActions({ fetchPost: 'posts/fetchPost' }),
 
     async setValues () {
       const post = await this.fetchPost(this.postId)

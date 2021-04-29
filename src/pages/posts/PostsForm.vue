@@ -11,7 +11,8 @@
       </div>
 
       <div v-if="!isCreate">
-        <modal-delete @click="deleteListPost" />
+        <q-btn flat color="negative" icon="delete" label="Deletar post" @click="confirmDelete" />
+        <modal-delete :confirmDeleteData='confirmDeleteData' @click="deleteListPost" />
       </div>
     </div>
 
@@ -34,7 +35,7 @@
 
       <div class="q-my-lg flex">
         <q-btn :disable="validateForm" color="primary" @click="actionChoose">{{ submitButtonLabel }}</q-btn>
-        <modal-cancel hasPagination="PostsList" />
+        <modal-cancel routeName="PostsList" />
       </div>
     </div>
   </q-page>
@@ -44,8 +45,8 @@
 import { mapActions, mapGetters } from 'vuex'
 import { validateRequiredFields, formatDateTime } from 'helpers'
 import { extend } from 'quasar'
-import modalCancel from 'src/components/modalCancel'
-import modalDelete from 'src/components/modalDelete'
+import modalCancel from 'components/modalCancel'
+import modalDelete from 'components/modalDelete'
 
 export default {
   components: {
@@ -72,7 +73,8 @@ export default {
           'Exterior',
           'Outros'
         ]
-      }
+      },
+      confirmDeleteData: false
     }
   },
 
@@ -90,15 +92,19 @@ export default {
 
     formatDateTime,
 
+    confirmDelete () {
+      this.confirmDeleteData = true
+    },
+
     async addPostToList () {
       this.values.postDate = formatDateTime()
       await this.addPost(this.values)
-      await this.fetchPosts()
 
       this.$q.notify({
         message: 'Post criado com sucesso!',
         type: 'positive'
       })
+
       this.$router.push({ name: 'PostsList' })
     },
 
@@ -110,7 +116,6 @@ export default {
       }
 
       await this.editPost(post)
-      await this.fetchPosts()
 
       this.$q.notify({
         message: 'Post alterado com sucesso!',
@@ -132,7 +137,6 @@ export default {
       })
 
       this.$router.push({ name: 'PostsList' })
-      await this.fetchPosts()
     },
 
     async setInputValues () {
@@ -148,7 +152,7 @@ export default {
     }),
 
     pageTitle () {
-      return this.isCreate ? 'Criar Postagem' : 'Editar postagem'
+      return `${this.isCreate ? 'Criar' : 'Editar'}` + ' postagem'
     },
 
     submitButtonLabel () {
