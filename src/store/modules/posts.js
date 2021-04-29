@@ -40,14 +40,12 @@ const actions = {
     } catch {}
   },
 
-  async deletePost ({ commit }, id) {
+  async deletePost (context, id) {
     try {
       await axios({
         method: 'DELETE',
         url: `posts/${id}`
       })
-
-      commit('deletePost', id)
     } catch {}
   },
 

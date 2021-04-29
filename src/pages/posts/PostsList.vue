@@ -154,7 +154,7 @@ export default {
         type: 'positive'
       })
 
-      this.fetchPosts()
+      await this.fetchPosts()
     },
 
     acessPost (id) {

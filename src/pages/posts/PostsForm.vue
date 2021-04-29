@@ -2,11 +2,11 @@
   <q-page class="bg-grey-2 q-pa-lg">
     <div class="flex justify-between">
       <div>
-        <p class="text-h5 q-mb-xs">{{ definitionOfPageName }}</p>
+        <p class="text-h5 q-mb-xs">{{ pageTitle }}</p>
         <q-breadcrumbs>
           <q-breadcrumbs-el label="Home" />
           <q-breadcrumbs-el label="Postagens" />
-          <q-breadcrumbs-el>{{ definitionOfPageName }}</q-breadcrumbs-el>
+          <q-breadcrumbs-el>{{ pageTitle }}</q-breadcrumbs-el>
         </q-breadcrumbs>
       </div>
 
@@ -104,10 +104,10 @@ export default {
       this.confirmDeleteData = true
     },
 
-    addPostToList () {
+    async addPostToList () {
       this.values.postDate = formatDateTime()
-      this.addPost(this.values)
-      this.fetchPosts()
+      await this.addPost(this.values)
+      await this.fetchPosts()
 
       this.$q.notify({
         message: 'Post criado com sucesso!',
@@ -116,15 +116,15 @@ export default {
       this.$router.push({ name: 'PostsList' })
     },
 
-    editPostList () {
+    async editPostList () {
       this.values.editDate = formatDateTime()
       const post = {
         values: this.values,
         id: this.postId
       }
 
-      this.editPost(post)
-      this.fetchPosts()
+      await this.editPost(post)
+      await this.fetchPosts()
 
       this.$q.notify({
         message: 'Post alterado com sucesso!',
@@ -146,7 +146,7 @@ export default {
       })
 
       this.$router.push({ name: 'PostsList' })
-      this.fetchPosts()
+      await this.fetchPosts()
     },
 
     async setInputValues () {
@@ -161,7 +161,7 @@ export default {
       authorsList: 'authors/authorsList'
     }),
 
-    definitionOfPageName () {
+    pageTitle () {
       return this.isCreate ? 'Criar Postagem' : 'Editar postagem'
     },
 
@@ -196,6 +196,7 @@ export default {
     if (!this.isCreate) {
       this.setInputValues()
     }
+
     this.fetchAuthors()
   }
 }
