@@ -1,10 +1,4 @@
 {
   "posts": [],
-  "authors": [
-    {
-      "name": "Monica",
-      "email": "monica@hotmail.com",
-      "id": 1
-    }
-  ]
+  "authors": []
 }

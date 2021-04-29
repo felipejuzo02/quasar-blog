@@ -13,18 +13,7 @@
       </div>
 
       <div v-if="!isCreate">
-        <q-btn flat color="negative" icon="delete" label="Deletar autor" @click="confirmDelete" />
-        <q-dialog v-model="confirmDeleteData" persistent>
-          <q-card>
-            <q-card-section class="row items-center">
-              <span class="q-ml-sm">Deseja mesmo excluir o autor?</span>
-            </q-card-section>
-            <q-card-actions align="center">
-              <q-btn flat label="Cancelar" color="primary" v-close-popup />
-              <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteListAuthor" />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
+        <modal-delete @click="deleteListAuthor" />
       </div>
     </div>
 
@@ -42,18 +31,19 @@
 <script>
 import { mapActions } from 'vuex'
 import { validateRequiredFields, validateEmailFields } from 'helpers'
-import modalCancel from 'src/components/modalCancel.vue'
+import modalCancel from 'src/components/modalCancel'
+import modalDelete from 'src/components/modalDelete'
 
 export default {
   components: {
-    modalCancel
+    modalCancel,
+    modalDelete
   },
 
   data () {
     return {
       name: '',
-      email: '',
-      confirmDeleteData: false
+      email: ''
     }
   },
 
@@ -69,10 +59,6 @@ export default {
     validateRequiredFields,
 
     validateEmailFields,
-
-    confirmDelete () {
-      this.confirmDeleteData = true
-    },
 
     editAuthorInformation () {
       const author = {

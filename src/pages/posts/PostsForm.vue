@@ -11,19 +11,8 @@
       </div>
 
       <div v-if="!isCreate">
-          <q-btn flat color="negative" icon="delete" label="Deletar autor" @click="confirmDelete" />
-          <q-dialog v-model="confirmDeleteData" persistent>
-            <q-card>
-              <q-card-section class="row items-center">
-                <span class="q-ml-sm">Deseja mesmo excluir o post?</span>
-              </q-card-section>
-              <q-card-actions align="center">
-                <q-btn flat label="Cancelar" color="primary" v-close-popup />
-                <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteListPost" />
-              </q-card-actions>
-            </q-card>
-          </q-dialog>
-        </div>
+        <modal-delete @click="deleteListPost" />
+      </div>
     </div>
 
     <div class="q-my-lg">
@@ -56,10 +45,12 @@ import { mapActions, mapGetters } from 'vuex'
 import { validateRequiredFields, formatDateTime } from 'helpers'
 import { extend } from 'quasar'
 import modalCancel from 'src/components/modalCancel'
+import modalDelete from 'src/components/modalDelete'
 
 export default {
   components: {
-    modalCancel
+    modalCancel,
+    modalDelete
   },
 
   data () {
@@ -81,8 +72,7 @@ export default {
           'Exterior',
           'Outros'
         ]
-      },
-      confirmDeleteData: false
+      }
     }
   },
 
@@ -99,10 +89,6 @@ export default {
     validateRequiredFields,
 
     formatDateTime,
-
-    confirmDelete () {
-      this.confirmDeleteData = true
-    },
 
     async addPostToList () {
       this.values.postDate = formatDateTime()
