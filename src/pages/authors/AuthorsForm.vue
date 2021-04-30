@@ -1,59 +1,51 @@
 <template>
-    <q-page class="bg-grey-2 q-pa-lg">
-      <div class="flex justify-between">
-        <div>
-          <p class="text-h5 q-mb-xs">{{ pageTitle}}</p>
-          <div>
-            <q-breadcrumbs>
-              <q-breadcrumbs-el label="Home" />
-              <q-breadcrumbs-el label="Autores" />
-              <q-breadcrumbs-el>{{ pageTitle }}</q-breadcrumbs-el>
-            </q-breadcrumbs>
-          </div>
-        </div>
-
-        <div v-if="!isCreate">
-          <q-btn flat color="negative" icon="delete" label="Deletar autor" @click="confirmDelete" />
-          <q-dialog v-model="confirmDeleteData" persistent>
-            <q-card>
-              <q-card-section class="row items-center">
-                <span class="q-ml-sm">Deseja mesmo excluir o autor?</span>
-              </q-card-section>
-              <q-card-actions align="center">
-                <q-btn flat label="Cancelar" color="primary" v-close-popup />
-                <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteListAuthor" />
-              </q-card-actions>
-            </q-card>
-          </q-dialog>
-        </div>
+  <q-page class="bg-grey-2 q-pa-lg">
+    <div class="flex justify-between">
+      <div>
+        <p class="text-h5 q-mb-xs">{{ pageTitle }}</p>
+        <q-breadcrumbs>
+          <q-breadcrumbs-el label="Home" />
+          <q-breadcrumbs-el label="Autores" />
+          <q-breadcrumbs-el>{{ pageTitle }}</q-breadcrumbs-el>
+        </q-breadcrumbs>
       </div>
 
-      <div class="q-my-lg relative-position">
-        <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" :rules="[ validateRequiredFields ]" />
-        <q-input outlined v-model="email" label="E-mail" :rules="[ validateEmailFields ]" />
-        <div class="q-my-lg flex">
-          <q-btn :disable="validateForm" color="primary" @click="actionChoose">{{ submitButtonLabel }}</q-btn>
-          <modal-cancel hasPagination="AuthorsList" />
-        </div>
+      <div v-if="!isCreate">
+        <q-btn flat color="negative" icon="delete" label="Deletar post" @click="confirmDelete" />
+        <modal-delete v-model="confirmDeleteData" @onConfirm="deleteListAuthor" />
       </div>
-    </q-page>
+    </div>
+
+    <div class="q-my-lg relative-position">
+      <q-input outlined v-model="name" label="Nome do autor" class="q-my-md" :rules="[ validateRequiredFields ]" />
+      <q-input outlined v-model="email" label="E-mail" :rules="[ validateEmailFields ]" />
+      <div class="q-my-lg flex">
+        <q-btn :disable="validateForm" color="primary" @click="actionChoose">{{ submitButtonLabel }}</q-btn>
+        <q-btn color="primary" flat label="Cancelar" @click="confirmCancel" />
+        <modal-cancel v-model="confirmCancelData" routeName="AuthorsList" />
+      </div>
+    </div>
+  </q-page>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import { validateRequiredFields, validateEmailFields } from 'helpers'
-import modalCancel from 'src/components/modalCancel.vue'
+import modalCancel from 'components/modalCancel'
+import modalDelete from 'components/modalDelete'
 
 export default {
   components: {
-    modalCancel
+    modalCancel,
+    modalDelete
   },
 
   data () {
     return {
       name: '',
       email: '',
-      confirmDeleteData: false
+      confirmDeleteData: false,
+      confirmCancelData: false
     }
   },
 
@@ -72,6 +64,10 @@ export default {
 
     confirmDelete () {
       this.confirmDeleteData = true
+    },
+
+    confirmCancel () {
+      this.confirmCancelData = true
     },
 
     editAuthorInformation () {
@@ -94,7 +90,6 @@ export default {
 
     deleteListAuthor () {
       this.deleteAuthor(this.authorId)
-      this.fetchAuthors()
 
       this.$q.notify({
         message: 'Autor excluido com sucesso!',

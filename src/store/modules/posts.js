@@ -9,36 +9,12 @@ const getters = {
 }
 
 const mutations = {
-  setPost (state, value) {
-    state.posts.push(value)
-  },
-
-  removePost (state, index) {
-    state.posts.splice(index, 1)
-  },
-
-  editPost (state, { values, index }) {
-    state.posts[index] = values
-  },
-
   fetchPosts (state, data) {
     state.posts = data
   }
 }
 
 const actions = {
-  setPost ({ commit }, value) {
-    commit('setPost', value)
-  },
-
-  removePost ({ commit }, index) {
-    commit('removePost', index)
-  },
-
-  editPost ({ commit }, post) {
-    commit('editPost', post)
-  },
-
   async fetchPosts ({ commit }) {
     try {
       const { data } = await axios({
@@ -47,6 +23,46 @@ const actions = {
       })
 
       commit('fetchPosts', data)
+    } catch {}
+  },
+
+  async addPost (context, data) {
+    try {
+      await axios({
+        method: 'POST',
+        url: 'posts',
+        data
+      })
+    } catch {}
+  },
+
+  async deletePost (context, id) {
+    try {
+      await axios({
+        method: 'DELETE',
+        url: `posts/${id}`
+      })
+    } catch {}
+  },
+
+  async fetchPost (context, id) {
+    try {
+      const { data } = await axios({
+        method: 'GET',
+        url: `posts/${id}`
+      })
+
+      return data
+    } catch {}
+  },
+
+  async editPost (context, post) {
+    try {
+      await axios({
+        method: 'PUT',
+        url: `posts/${post.id}`,
+        data: post.values
+      })
     } catch {}
   }
 }

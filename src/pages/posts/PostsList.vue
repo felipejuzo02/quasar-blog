@@ -59,15 +59,15 @@
       </div>
     </div>
     <div class="row q-col-gutter-md full-width q-my-lg">
-      <div v-for="(post, id) in postsList" :key="id" class="col-sm-3 col-12 page-posts-list__card">
-        <card-post :content="post" @click="acessPost(id)">
+      <div v-for="(post, index) in postsList" :key="index" class="col-sm-3 col-12 page-posts-list__card">
+        <card-post :content="post" @click="acessPost(post.id)">
           <template v-slot:actions>
             <q-btn class="page-posts-list__edit-button absolute" flat icon="edit">
               <q-menu>
                 <q-list>
                   <q-item>
                     <q-item-section>
-                      <q-btn flat :to="{ name: 'PostsEdit', params: { id } }">Editar</q-btn>
+                      <q-btn flat :to="{ name: 'PostsEdit', params: { id: post.id } }">Editar</q-btn>
                       <q-btn flat text-color="negative" @click="confirmDelete">Excluir</q-btn>
                       <q-dialog v-model="confirmDeleteData" persistent>
                         <q-card>
@@ -77,7 +77,7 @@
 
                           <q-card-actions align="center">
                             <q-btn flat label="Cancelar" color="primary" v-close-popup />
-                            <q-btn label="Confirmar" color="primary" v-close-popup @click="deletePost(id)" />
+                            <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteListPost(post.id)" />
                           </q-card-actions>
                         </q-card>
                       </q-dialog>
@@ -139,7 +139,7 @@ export default {
 
   methods: {
     ...mapActions({
-      removePost: 'posts/removePost',
+      deletePost: 'posts/deletePost',
       fetchPosts: 'posts/fetchPosts'
     }),
 
@@ -147,12 +147,14 @@ export default {
       this.confirmDeleteData = true
     },
 
-    deletePost (id) {
-      this.removePost(id)
+    async deleteListPost (id) {
+      await this.deletePost(id)
       this.$q.notify({
         message: 'Post excluido com sucesso!',
         type: 'positive'
       })
+
+      await this.fetchPosts()
     },
 
     acessPost (id) {
