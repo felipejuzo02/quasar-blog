@@ -1,25 +1,4 @@
 {
-  "posts": [
-    {
-      "mainImageURL": "a",
-      "title": "a",
-      "shortDescription": "a",
-      "authorName": "a",
-      "category": "Tecnologia",
-      "mainText": "a",
-      "categoryOptions": [
-        "Esportes",
-        "Tecnologia",
-        "Culinária",
-        "Mercado Financeiro",
-        "Animais",
-        "Brasil",
-        "Exterior",
-        "Outros"
-      ],
-      "postDate": "29/04/2021 16:57:43",
-      "id": 1
-    }
-  ],
+  "posts": [],
   "authors": []
 }

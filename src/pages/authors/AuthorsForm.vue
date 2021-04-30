@@ -13,7 +13,8 @@
       </div>
 
       <div v-if="!isCreate">
-        <modal-delete @click="deleteListAuthor" />
+        <q-btn flat color="negative" icon="delete" label="Deletar post" @click="confirmDelete" />
+        <modal-delete :confirmDeleteData="confirmDeleteData" @onConfirm="deleteListAuthor" />
       </div>
     </div>
 
@@ -22,7 +23,8 @@
       <q-input outlined v-model="email" label="E-mail" :rules="[ validateEmailFields ]" />
       <div class="q-my-lg flex">
         <q-btn :disable="validateForm" color="primary" @click="actionChoose">{{ submitButtonLabel }}</q-btn>
-        <modal-cancel hasPagination="AuthorsList" />
+        <q-btn color="primary" flat label="Cancelar" @click="cancellationConfirmation" />
+        <modal-cancel :cancellationConfirmationData="cancellationConfirmationData" routeName="AuthorsList" />
       </div>
     </div>
   </q-page>
@@ -43,7 +45,9 @@ export default {
   data () {
     return {
       name: '',
-      email: ''
+      email: '',
+      confirmDeleteData: false,
+      cancellationConfirmationData: false
     }
   },
 
@@ -59,6 +63,14 @@ export default {
     validateRequiredFields,
 
     validateEmailFields,
+
+    confirmDelete () {
+      this.confirmDeleteData = true
+    },
+
+    cancellationConfirmation () {
+      this.cancellationConfirmationData = true
+    },
 
     editAuthorInformation () {
       const author = {
