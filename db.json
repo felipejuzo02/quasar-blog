@@ -1,4 +1,32 @@
 {
-  "posts": [],
-  "authors": []
+  "posts": [
+    {
+      "mainImageURL": "da",
+      "title": "dada",
+      "shortDescription": "dad",
+      "authorName": "dad",
+      "category": "Outros",
+      "mainText": "da",
+      "categoryOptions": [
+        "Esportes",
+        "Tecnologia",
+        "Culinária",
+        "Mercado Financeiro",
+        "Animais",
+        "Brasil",
+        "Exterior",
+        "Outros"
+      ],
+      "postDate": "30/04/2021 12:21:20",
+      "id": 1,
+      "editDate": "30/04/2021 12:21:59"
+    }
+  ],
+  "authors": [
+    {
+      "name": "dad",
+      "email": "adada@hot.com",
+      "id": 1
+    }
+  ]
 }

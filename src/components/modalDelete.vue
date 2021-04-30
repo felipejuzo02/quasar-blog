@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="confirmDeleteData" persistent>
+  <q-dialog v-bind="$attrs" v-on="$listeners" persistent>
     <q-card>
       <q-card-section class="row items-center">
         <span class="q-ml-sm">Deseja mesmo realizar a exclusão?</span>

@@ -12,7 +12,7 @@
 
       <div v-if="!isCreate">
         <q-btn flat color="negative" icon="delete" label="Deletar post" @click="confirmDelete" />
-        <modal-delete :confirmDeleteData="confirmDeleteData" @onConfirm="deleteListPost" />
+        <modal-delete v-model="confirmDeleteData" @onConfirm="deleteListPost" />
       </div>
     </div>
 
@@ -35,8 +35,8 @@
 
       <div class="q-my-lg flex">
         <q-btn :disable="validateForm" color="primary" @click="actionChoose">{{ submitButtonLabel }}</q-btn>
-        <q-btn color="primary" flat label="Cancelar" @click="cancellationConfirmation" />
-        <modal-cancel :cancellationConfirmationData="cancellationConfirmationData" routeName="PostsList" />
+        <q-btn color="primary" flat label="Cancelar" @click="confirmCancel" />
+        <modal-cancel v-model="confirmCancelData" routeName="PostsList" />
       </div>
     </div>
   </q-page>
@@ -76,7 +76,7 @@ export default {
         ]
       },
       confirmDeleteData: false,
-      cancellationConfirmationData: false
+      confirmCancelData: false
     }
   },
 
@@ -98,8 +98,8 @@ export default {
       this.confirmDeleteData = true
     },
 
-    cancellationConfirmation () {
-      this.cancellationConfirmationData = true
+    confirmCancel () {
+      this.confirmCancelData = true
     },
 
     async addPostToList () {
@@ -158,7 +158,7 @@ export default {
     }),
 
     pageTitle () {
-      return `${this.isCreate ? 'Criar' : 'Editar'}` + ' postagem'
+      return `${this.isCreate ? 'Criar' : 'Editar'} postagem`
     },
 
     submitButtonLabel () {
