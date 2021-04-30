@@ -11,13 +11,3 @@
     </q-card>
   </q-dialog>
 </template>
-
-<script>
-export default {
-  props: {
-    confirmDeleteData: {
-      type: Boolean
-    }
-  }
-}
-</script>

@@ -3,13 +3,11 @@
     <div class="flex justify-between">
       <div>
         <p class="text-h5 q-mb-xs">{{ pageTitle }}</p>
-        <div>
-          <q-breadcrumbs>
-            <q-breadcrumbs-el label="Home" />
-            <q-breadcrumbs-el label="Autores" />
-            <q-breadcrumbs-el>{{ pageTitle }}</q-breadcrumbs-el>
-          </q-breadcrumbs>
-        </div>
+        <q-breadcrumbs>
+          <q-breadcrumbs-el label="Home" />
+          <q-breadcrumbs-el label="Autores" />
+          <q-breadcrumbs-el>{{ pageTitle }}</q-breadcrumbs-el>
+        </q-breadcrumbs>
       </div>
 
       <div v-if="!isCreate">
