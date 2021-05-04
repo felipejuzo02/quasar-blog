@@ -15,11 +15,12 @@ const mutations = {
 }
 
 const actions = {
-  async fetchPosts ({ commit }) {
+  async fetchPosts ({ commit }, filter) {
     try {
       const { data } = await axios({
         method: 'GET',
-        url: 'posts'
+        url: 'posts',
+        params: filter
       })
 
       commit('fetchPosts', data)

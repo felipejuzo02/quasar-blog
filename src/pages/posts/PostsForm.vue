@@ -27,7 +27,7 @@
       <div class="flex items-center q-mb-lg">
         <q-select class="col q-mr-sm" outlined v-model="values.authorName" :options="authorsOptions"
         label="Escolha o autor*" :rules="[validateRequiredFields]" />
-        <q-select class="col q-ml-sm" outlined v-model="values.category" :options="values.categoryOptions"
+        <q-select class="col q-ml-sm" outlined v-model="values.category" :options="categoryOptions"
         label="Informe a categoria da postagem*" :rules="[validateRequiredFields]" />
       </div>
 
@@ -57,23 +57,23 @@ export default {
 
   data () {
     return {
+      categoryOptions: [
+        'Esportes',
+        'Tecnologia',
+        'Culinária',
+        'Mercado Financeiro',
+        'Animais',
+        'Brasil',
+        'Exterior',
+        'Outros'
+      ],
       values: {
         mainImageURL: '',
         title: '',
         shortDescription: '',
         authorName: '',
         category: '',
-        mainText: '',
-        categoryOptions: [
-          'Esportes',
-          'Tecnologia',
-          'Culinária',
-          'Mercado Financeiro',
-          'Animais',
-          'Brasil',
-          'Exterior',
-          'Outros'
-        ]
+        mainText: ''
       },
       confirmDeleteData: false,
       confirmCancelData: false
@@ -103,7 +103,7 @@ export default {
     },
 
     async addPostToList () {
-      this.values.postDate = formatDateTime()
+      this.values.postDate = this.formatDateTime()
       await this.addPost(this.values)
 
       this.$q.notify({
@@ -115,7 +115,7 @@ export default {
     },
 
     async editPostList () {
-      this.values.editDate = formatDateTime()
+      this.values.editDate = this.formatDateTime()
       const post = {
         values: this.values,
         id: this.postId

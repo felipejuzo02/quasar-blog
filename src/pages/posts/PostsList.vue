@@ -15,28 +15,27 @@
       </div>
 
       <div class="flex q-my-lg justify-between">
-        <q-input v-model="searchText" label="Procurar" class="page-posts-list__search col" />
-        <q-btn flat color="primary" icon="filter_list" label="Filtrar">
+        <q-input debounce="1000" @input="filterPost" v-model="filterData.title" label="Procurar" class="page-posts-list__search col" />
+        <q-btn flat color="primary" label="Filtrar" icon="filter_list">
           <q-menu>
             <q-list class="page-post-list__filter-options">
               <q-item>
                 <q-item-section>
-                  <q-select v-model="selectedValues.selectedAuthor" :options="authorsOptions" label="Autor" />
+                  <q-select v-model="filterData.authorName" :options="authorsOptions" label="Autor" />
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-select v-model="selectedValues.selectedCategory" :options="categoryOptions" label="Categoria" />
+                  <q-select v-model="filterData.category" :options="categoryOptions" label="Categoria" />
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-select v-model="selectedValues.selectedDate" :options="dataOptions" label="Data" />
-                  <q-input filled v-model="selectedValues.calendarDate" mask="date" :rules="['date']" class="q-mt-md">
+                  <q-input filled v-model="filterData.postDate" :rules="['date']" class="q-mt-md">
                     <template v-slot:append>
                       <q-icon name="event" class="cursor-pointer">
                         <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                          <q-date v-model="selectedValues.calendarDate">
+                          <q-date v-model="filterData.postDate" mask="DD/MM/YYYY">
                             <div class="row items-center justify-end">
                               <q-btn v-close-popup label="Close" color="primary" flat />
                             </div>
@@ -49,8 +48,8 @@
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-btn color="primary" label="Filtrar" />
-                  <q-btn color="primary" flat label="Limpar" @click="clearFilters" />
+                  <q-btn color="primary" v-close-popup label="Filtrar" @click="filterPost" />
+                  <q-btn color="primary" v-close-popup flat label="Limpar" @click="clearFilters" />
                 </q-item-section>
               </q-item>
             </q-list>
@@ -113,9 +112,7 @@ export default {
 
   data () {
     return {
-      currentPage: '1',
-      searchText: '',
-      dataOptions: ['Mais recentes', 'Mais antigos'],
+      currentPage: 1,
       categoryOptions: [
         'Esportes',
         'Tecnologia',
@@ -126,11 +123,11 @@ export default {
         'Outros'
       ],
 
-      selectedValues: {
-        selectedAuthor: '',
-        selectedCategory: '',
-        selectedDate: '',
-        calendarDate: ''
+      filterData: {
+        authorName: '',
+        category: '',
+        postDate: '',
+        title: ''
       },
 
       confirmDeleteData: false
@@ -140,7 +137,8 @@ export default {
   methods: {
     ...mapActions({
       deletePost: 'posts/deletePost',
-      fetchPosts: 'posts/fetchPosts'
+      fetchPosts: 'posts/fetchPosts',
+      fetchAuthors: 'authors/fecthAuthors'
     }),
 
     confirmDelete () {
@@ -161,10 +159,23 @@ export default {
       this.$router.push({ name: 'PostsSingle', params: { id } })
     },
 
-    clearFilters () {
-      for (const objKey in this.selectedValues) {
-        this.selectedValues[objKey] = ''
+    async filterPost () {
+      const filter = {}
+      for (const key in this.filterData) {
+        if (this.filterData[key]) {
+          filter[`${key}_like`] = this.filterData[key]
+        }
       }
+
+      await this.fetchPosts(filter)
+    },
+
+    clearFilters () {
+      for (const objKey in this.filterData) {
+        this.filterData[objKey] = ''
+      }
+
+      this.fetchPosts()
     }
   },
 
@@ -185,6 +196,8 @@ export default {
 
   created () {
     this.fetchPosts()
+
+    this.fetchAuthors()
   }
 }
 </script>
