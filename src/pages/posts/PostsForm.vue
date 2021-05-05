@@ -103,7 +103,7 @@ export default {
     },
 
     async addPostToList () {
-      this.values.postDate = this.formatDateTime()
+      this.values.postDate = formatDateTime()
       await this.addPost(this.values)
 
       this.$q.notify({
@@ -115,7 +115,7 @@ export default {
     },
 
     async editPostList () {
-      this.values.editDate = this.formatDateTime()
+      this.values.editDate = formatDateTime()
       const post = {
         values: this.values,
         id: this.postId

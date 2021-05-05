@@ -15,27 +15,27 @@
       </div>
 
       <div class="flex q-my-lg justify-between">
-        <q-input debounce="1000" @input="filterPost" v-model="filterData.title" label="Procurar" class="page-posts-list__search col" />
+        <q-input debounce="1000" @input="filterPost" v-model="filters.title" label="Procurar" class="page-posts-list__search col" />
         <q-btn flat color="primary" label="Filtrar" icon="filter_list">
           <q-menu>
             <q-list class="page-post-list__filter-options">
               <q-item>
                 <q-item-section>
-                  <q-select v-model="filterData.authorName" :options="authorsOptions" label="Autor" />
+                  <q-select v-model="filters.authorName" :options="authorsOptions" label="Autor" />
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-select v-model="filterData.category" :options="categoryOptions" label="Categoria" />
+                  <q-select v-model="filters.category" :options="categoryOptions" label="Categoria" />
                 </q-item-section>
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-input filled v-model="filterData.postDate" :rules="['date']" class="q-mt-md">
+                  <q-input filled v-model="filters.postDate" :rules="['date']" class="q-mt-md">
                     <template v-slot:append>
                       <q-icon name="event" class="cursor-pointer">
                         <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                          <q-date v-model="filterData.postDate" mask="DD/MM/YYYY">
+                          <q-date v-model="filters.postDate" mask="DD/MM/YYYY">
                             <div class="row items-center justify-end">
                               <q-btn v-close-popup label="Close" color="primary" flat />
                             </div>
@@ -123,7 +123,7 @@ export default {
         'Outros'
       ],
 
-      filterData: {
+      filters: {
         authorName: '',
         category: '',
         postDate: '',
@@ -161,9 +161,9 @@ export default {
 
     async filterPost () {
       const filter = {}
-      for (const key in this.filterData) {
-        if (this.filterData[key]) {
-          filter[`${key}_like`] = this.filterData[key]
+      for (const key in this.filters) {
+        if (this.filters[key]) {
+          filter[`${key}_like`] = this.filters[key]
         }
       }
 
@@ -171,8 +171,8 @@ export default {
     },
 
     clearFilters () {
-      for (const objKey in this.filterData) {
-        this.filterData[objKey] = ''
+      for (const objKey in this.filters) {
+        this.filters[objKey] = ''
       }
 
       this.fetchPosts()
