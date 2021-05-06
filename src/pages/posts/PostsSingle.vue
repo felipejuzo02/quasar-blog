@@ -16,7 +16,7 @@
     <q-separator color="primary" size="3px" />
 
     <div class="q-my-md text-justify">
-      <img class="full-width" :src="values.mainImageURL" :alt="values.title">
+      <img class="page-posts__image q-ml-md" :src="values.mainImageURL" :alt="values.title">
       <br>
       <div v-html="values.mainText"></div>
     </div>
@@ -68,6 +68,11 @@ export default {
   .page-posts {
     &__category {
       height: 20px
+    }
+
+    &__image {
+      width: 50%;
+      float: right;
     }
   }
 </style>

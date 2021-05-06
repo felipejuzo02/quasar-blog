@@ -104,9 +104,8 @@ export default {
       this.email = author.email
     },
 
-    addAuthorToList () {
-      this.addAuthor({ name: this.name, email: this.email })
-      this.fetchAuthors()
+    async addAuthorToList () {
+      await this.addAuthor({ name: this.name, email: this.email })
 
       this.$q.notify({
         message: 'Autor criado com sucesso!',

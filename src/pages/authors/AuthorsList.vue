@@ -55,11 +55,15 @@
           </q-item>
         </q-list>
 
-        <div v-else class="flex flex-center q-pt-xl">
-          Nenhum autor criado até o momento
+        <div v-if="!authorsList.length" class="flex flex-center q-pt-xl">
+          <p class="q-mb-lg">Ops... Não encontrei nenhum autor</p>
+        </div>
+
+        <div v-if="hasPagination" class="q-pa-lg flex flex-center">
+          <q-pagination v-model="pagination._page" :max="5" direction-links boundary-links icon-first="skip_previous"
+          icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" @click="authorsPagination" />
         </div>
       </div>
-
     </q-page>
 </template>
 
@@ -70,14 +74,23 @@ export default {
   data () {
     return {
       text: '',
-      confirmDeleteData: false
+      confirmDeleteData: false,
+
+      pagination: {
+        _page: 1,
+        _limit: 10
+      }
     }
   },
 
   computed: {
     ...mapGetters({
       authorsList: 'authors/authorsList'
-    })
+    }),
+
+    hasPagination () {
+      return this.authorsList.length >= 8 || this.pagination._page !== 1
+    }
   },
 
   methods: {
@@ -97,11 +110,15 @@ export default {
 
     confirmDelete () {
       this.confirmDeleteData = true
+    },
+
+    async authorsPagination () {
+      await this.fetchAuthors(this.pagination)
     }
   },
 
   created () {
-    this.fetchAuthors()
+    this.fetchAuthors(this.pagination)
   }
 }
 </script>

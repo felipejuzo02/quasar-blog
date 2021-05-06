@@ -90,13 +90,13 @@
       </div>
     </div>
 
-    <div v-if="hasPagination" class="q-pa-lg flex flex-center">
-      <q-pagination v-model="currentPage" :max="5" direction-links boundary-links icon-first="skip_previous"
-      icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" />
+    <div v-if="!postsList.length" class="flex flex-center q-pt-xl">
+      <p class="q-mb-lg">Ops... Não encontrei postagens.</p>
     </div>
 
-    <div v-else-if="!postsList.length" class="flex flex-center q-pt-xl">
-      Até o momento nenhuma postagem foi adicionada
+    <div v-if="hasPagination" class="q-pa-lg flex flex-center">
+      <q-pagination v-model="pagination._page" :max="5" direction-links boundary-links icon-first="skip_previous"
+      icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" @click="filterPost" />
     </div>
   </q-page>
 </template>
@@ -112,7 +112,6 @@ export default {
 
   data () {
     return {
-      currentPage: 1,
       categoryOptions: [
         'Esportes',
         'Tecnologia',
@@ -122,6 +121,11 @@ export default {
         'Exterior',
         'Outros'
       ],
+
+      pagination: {
+        _page: 1,
+        _limit: 8
+      },
 
       filters: {
         authorName: '',
@@ -152,7 +156,7 @@ export default {
         type: 'positive'
       })
 
-      await this.fetchPosts()
+      await this.fetchPosts(this.pagination)
     },
 
     acessPost (id) {
@@ -167,7 +171,7 @@ export default {
         }
       }
 
-      await this.fetchPosts(filter)
+      await this.fetchPosts({ ...this.pagination, ...filter })
     },
 
     clearFilters () {
@@ -175,7 +179,7 @@ export default {
         this.filters[objKey] = ''
       }
 
-      this.fetchPosts()
+      this.fetchPosts(this.pagination)
     }
   },
 
@@ -190,12 +194,12 @@ export default {
     },
 
     hasPagination () {
-      return this.postsList.length > 8
+      return this.postsList.length >= 8 || this.pagination._page !== 1
     }
   },
 
   created () {
-    this.fetchPosts()
+    this.fetchPosts(this.pagination)
 
     this.fetchAuthors()
   }
