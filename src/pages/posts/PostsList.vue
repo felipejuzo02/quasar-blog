@@ -31,7 +31,7 @@
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-input filled v-model="filters.postDate" :rules="['date']" class="q-mt-md">
+                  <q-input filled v-model="filters.postDate" class="q-mt-md">
                     <template v-slot:append>
                       <q-icon name="event" class="cursor-pointer">
                         <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -57,7 +57,7 @@
         </q-btn>
       </div>
     </div>
-    <div class="row q-col-gutter-md full-width q-my-lg">
+    <div v-if="$q.screen.gt.sm" class="row q-col-gutter-md full-width q-my-lg">
       <div v-for="(post, index) in postsList" :key="index" class="col-sm-3 col-12 page-posts-list__card">
         <card-post :content="post" @click="acessPost(post.id)">
           <template v-slot:actions>
@@ -90,13 +90,46 @@
       </div>
     </div>
 
+     <div v-if="!$q.screen.gt.sm" class="row full-width q-my-lg">
+      <div v-for="(post, index) in postsList" :key="index" class="q-mb-md col-sm-3 col-12 page-posts-list__card">
+        <card-post :content="post" @click="acessPost(post.id)">
+          <template v-slot:actions>
+            <q-btn class="page-posts-list__edit-button absolute" flat icon="edit">
+              <q-menu>
+                <q-list>
+                  <q-item>
+                    <q-item-section>
+                      <q-btn flat :to="{ name: 'PostsEdit', params: { id: post.id } }">Editar</q-btn>
+                      <q-btn flat text-color="negative" @click="confirmDelete">Excluir</q-btn>
+                      <q-dialog v-model="confirmDeleteData" persistent>
+                        <q-card>
+                          <q-card-section class="row items-center">
+                            <span class="q-ml-sm">Quer realmente excluir o post?</span>
+                          </q-card-section>
+
+                          <q-card-actions align="center">
+                            <q-btn flat label="Cancelar" color="primary" v-close-popup />
+                            <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteListPost(post.id)" />
+                          </q-card-actions>
+                        </q-card>
+                      </q-dialog>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
+          </template>
+        </card-post>
+      </div>
+    </div>
+
     <div v-if="!postsList.length" class="flex flex-center q-pt-xl">
-      <p class="q-mb-lg">Ops... Não encontrei postagens.</p>
+      <p class="q-mb-lg">Ops... Nenhum post encontrado.</p>
     </div>
 
     <div v-if="hasPagination" class="q-pa-lg flex flex-center">
       <q-pagination v-model="pagination._page" :max="5" direction-links boundary-links icon-first="skip_previous"
-      icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" @click="filterPost" />
+      icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" @input="filterPost" />
     </div>
   </q-page>
 </template>

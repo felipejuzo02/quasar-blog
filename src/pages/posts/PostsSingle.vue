@@ -1,7 +1,8 @@
 <template>
   <q-page class="bg-grey-2 q-pa-lg page-posts">
     <div>
-      <div class="text-h2 text-primary">{{ values.title }}</div>
+      <div v-if="$q.screen.gt.sm" class="text-h2 text-primary">{{ values.title }}</div>
+      <div v-if="!$q.screen.gt.sm" class="text-h4 text-center text-primary">{{ values.title }}</div>
       <div class="text-subtitle1 q-my-sm text-grey-8">{{ values.shortDescription }}</div>
       <div class="text-caption">
         <p class="q-ma-none">Realizado por <span class="text-primary">{{ values.authorName }}</span></p>
@@ -15,10 +16,14 @@
 
     <q-separator color="primary" size="3px" />
 
-    <div class="q-my-md text-justify">
+    <div v-if="!$q.screen.gt.sm">
+      <img class="full-width q-my-md" :src="values.mainImageURL" :alt="values.title">
+      <div v-html="values.mainText" class="text-justify" />
+    </div>
+
+    <div v-if="$q.screen.gt.sm" class="q-my-md">
       <img class="page-posts__image q-ml-md" :src="values.mainImageURL" :alt="values.title">
-      <br>
-      <div v-html="values.mainText"></div>
+      <div v-html="values.mainText" class="text-justify" />
     </div>
   </q-page>
 </template>

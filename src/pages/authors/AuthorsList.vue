@@ -22,8 +22,8 @@
             <div class="q-mb-none col">E-mail</div>
           </div>
           <q-item clickable v-ripple v-for="(author, index) in authorsList" :key="index" class="row items-center">
-            <p class="q-mb-none col">{{ author.name }}</p>
-            <p class="q-mb-none col">{{ author.email }}</p>
+            <p class="q-mb-none col ">{{ author.name }}</p>
+            <p class="q-mb-none col ellipsis">{{ author.email }}</p>
             <q-btn flat icon="more_vert">
               <q-menu>
                 <q-list class="page-authors-list">
@@ -56,12 +56,12 @@
         </q-list>
 
         <div v-if="!authorsList.length" class="flex flex-center q-pt-xl">
-          <p class="q-mb-lg">Ops... Não encontrei nenhum autor</p>
+          <p class="q-mb-lg">Ops... Nenhum autor encontrado</p>
         </div>
 
         <div v-if="hasPagination" class="q-pa-lg flex flex-center">
           <q-pagination v-model="pagination._page" :max="5" direction-links boundary-links icon-first="skip_previous"
-          icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" @click="authorsPagination" />
+          icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" @input="fetchAuthors(pagination)" />
         </div>
       </div>
     </q-page>
@@ -89,7 +89,7 @@ export default {
     }),
 
     hasPagination () {
-      return this.authorsList.length >= 8 || this.pagination._page !== 1
+      return this.authorsList.length >= this.pagination._limit || this.pagination._page !== 1
     }
   },
 
@@ -105,20 +105,22 @@ export default {
         message: 'Autor excluido com sucesso!',
         type: 'positive'
       })
-      this.fetchAuthors()
+      this.fetchAuthors(this.pagination)
     },
 
     confirmDelete () {
       this.confirmDeleteData = true
     },
 
-    async authorsPagination () {
-      await this.fetchAuthors(this.pagination)
+    teste () {
+      console.log('ata' + this.authorsList.length)
     }
   },
 
   created () {
     this.fetchAuthors(this.pagination)
+
+    this.teste()
   }
 }
 </script>

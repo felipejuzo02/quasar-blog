@@ -2,10 +2,12 @@ import axios from 'axios'
 
 const state = {
   authors: []
+
 }
 
 const getters = {
   authorsList: state => state.authors
+
 }
 
 const mutations = {
