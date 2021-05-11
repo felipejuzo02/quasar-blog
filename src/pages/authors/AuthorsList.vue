@@ -22,7 +22,7 @@
             <div class="q-mb-none col">E-mail</div>
           </div>
           <q-item clickable v-ripple v-for="(author, index) in authorsList" :key="index" class="row items-center">
-            <p class="q-mb-none col ">{{ author.name }}</p>
+            <p class="q-mb-none col">{{ author.name }}</p>
             <p class="q-mb-none col ellipsis">{{ author.email }}</p>
             <q-btn flat icon="more_vert">
               <q-menu>

@@ -1,8 +1,7 @@
 <template>
   <q-page class="bg-grey-2 q-pa-lg page-posts">
     <div>
-      <div v-if="$q.screen.gt.sm" class="text-h2 text-primary">{{ values.title }}</div>
-      <div v-if="!$q.screen.gt.sm" class="text-h4 text-center text-primary">{{ values.title }}</div>
+      <div class="text-primary" :class="titleStyle">{{ values.title }}</div>
       <div class="text-subtitle1 q-my-sm text-grey-8">{{ values.shortDescription }}</div>
       <div class="text-caption">
         <p class="q-ma-none">Realizado por <span class="text-primary">{{ values.authorName }}</span></p>
@@ -58,11 +57,15 @@ export default {
     },
 
     postContainer () {
-      return this.$q.screen.gt.sm ? 'q-my-md' : ''
+      return this.$q.screen.gt.sm && 'q-my-md'
     },
 
     imageSize () {
       return this.$q.screen.gt.sm ? 'page-posts__image q-ml-md' : 'full-width q-my-md'
+    },
+
+    titleStyle () {
+      return this.$q.screen.gt.sm ? 'text-h2' : 'text-h4 text-center'
     }
   },
 

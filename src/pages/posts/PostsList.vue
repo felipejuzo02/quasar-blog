@@ -199,11 +199,11 @@ export default {
     },
 
     postsListsContainer () {
-      return this.$q.screen.gt.sm ? 'q-col-gutter-md' : ''
+      return this.$q.screen.gt.sm && 'q-col-gutter-md'
     },
 
     postsListsSize () {
-      return this.$q.screen.gt.sm ? '' : 'q-mb-md'
+      return !this.$q.screen.gt.sm && 'q-mb-md'
     }
   },
 
