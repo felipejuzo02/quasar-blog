@@ -16,13 +16,8 @@
 
     <q-separator color="primary" size="3px" />
 
-    <div v-if="!$q.screen.gt.sm">
-      <img class="full-width q-my-md" :src="values.mainImageURL" :alt="values.title">
-      <div v-html="values.mainText" class="text-justify" />
-    </div>
-
-    <div v-if="$q.screen.gt.sm" class="q-my-md">
-      <img class="page-posts__image q-ml-md" :src="values.mainImageURL" :alt="values.title">
+    <div :class="postContainer" class="q-my-md">
+      <img :class="imageSize" :src="values.mainImageURL" :alt="values.title">
       <div v-html="values.mainText" class="text-justify" />
     </div>
   </q-page>
@@ -60,6 +55,14 @@ export default {
   computed: {
     postId () {
       return this.$route.params.id
+    },
+
+    postContainer () {
+      return this.$q.screen.gt.sm ? 'q-my-md' : ''
+    },
+
+    imageSize () {
+      return this.$q.screen.gt.sm ? 'page-posts__image q-ml-md' : 'full-width q-my-md'
     }
   },
 

@@ -110,17 +110,11 @@ export default {
 
     confirmDelete () {
       this.confirmDeleteData = true
-    },
-
-    teste () {
-      console.log('ata' + this.authorsList.length)
     }
   },
 
   created () {
     this.fetchAuthors(this.pagination)
-
-    this.teste()
   }
 }
 </script>

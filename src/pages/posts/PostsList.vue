@@ -57,41 +57,9 @@
         </q-btn>
       </div>
     </div>
-    <div v-if="$q.screen.gt.sm" class="row q-col-gutter-md full-width q-my-lg">
-      <div v-for="(post, index) in postsList" :key="index" class="col-sm-3 col-12 page-posts-list__card">
-        <card-post :content="post" @click="acessPost(post.id)">
-          <template v-slot:actions>
-            <q-btn class="page-posts-list__edit-button absolute" flat icon="edit">
-              <q-menu>
-                <q-list>
-                  <q-item>
-                    <q-item-section>
-                      <q-btn flat :to="{ name: 'PostsEdit', params: { id: post.id } }">Editar</q-btn>
-                      <q-btn flat text-color="negative" @click="confirmDelete">Excluir</q-btn>
-                      <q-dialog v-model="confirmDeleteData" persistent>
-                        <q-card>
-                          <q-card-section class="row items-center">
-                            <span class="q-ml-sm">Quer realmente excluir o post?</span>
-                          </q-card-section>
 
-                          <q-card-actions align="center">
-                            <q-btn flat label="Cancelar" color="primary" v-close-popup />
-                            <q-btn label="Confirmar" color="primary" v-close-popup @click="deleteListPost(post.id)" />
-                          </q-card-actions>
-                        </q-card>
-                      </q-dialog>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </q-btn>
-          </template>
-        </card-post>
-      </div>
-    </div>
-
-     <div v-if="!$q.screen.gt.sm" class="row full-width q-my-lg">
-      <div v-for="(post, index) in postsList" :key="index" class="q-mb-md col-sm-3 col-12 page-posts-list__card">
+    <div class="row full-width q-my-lg" :class="postsListsContainer">
+      <div v-for="(post, index) in postsList" :key="index" class="col-sm-3 col-12 page-posts-list__card" :class="postsListsSize">
         <card-post :content="post" @click="acessPost(post.id)">
           <template v-slot:actions>
             <q-btn class="page-posts-list__edit-button absolute" flat icon="edit">
@@ -228,6 +196,14 @@ export default {
 
     hasPagination () {
       return this.postsList.length >= 8 || this.pagination._page !== 1
+    },
+
+    postsListsContainer () {
+      return this.$q.screen.gt.sm ? 'q-col-gutter-md' : ''
+    },
+
+    postsListsSize () {
+      return this.$q.screen.gt.sm ? '' : 'q-mb-md'
     }
   },
 
