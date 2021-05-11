@@ -1,7 +1,7 @@
 <template>
   <q-page class="bg-grey-2 q-pa-lg page-posts">
     <div>
-      <div class="text-primary" :class="titleStyle">{{ values.title }}</div>
+      <div class="text-primary" :class="titleClass">{{ values.title }}</div>
       <div class="text-subtitle1 q-my-sm text-grey-8">{{ values.shortDescription }}</div>
       <div class="text-caption">
         <p class="q-ma-none">Realizado por <span class="text-primary">{{ values.authorName }}</span></p>
@@ -64,7 +64,7 @@ export default {
       return this.$q.screen.gt.sm ? 'page-posts__image q-ml-md' : 'full-width q-my-md'
     },
 
-    titleStyle () {
+    titleClass () {
       return this.$q.screen.gt.sm ? 'text-h2' : 'text-h4 text-center'
     }
   },
