@@ -2,10 +2,12 @@ import axios from 'axios'
 
 const state = {
   authors: []
+
 }
 
 const getters = {
   authorsList: state => state.authors
+
 }
 
 const mutations = {
@@ -15,11 +17,12 @@ const mutations = {
 }
 
 const actions = {
-  async fecthAuthors ({ commit }) {
+  async fecthAuthors ({ commit }, params) {
     try {
       const { data } = await axios({
         method: 'GET',
-        url: 'authors'
+        url: 'authors',
+        params
       })
 
       commit('fecthAuthors', data)

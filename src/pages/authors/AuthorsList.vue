@@ -23,7 +23,7 @@
           </div>
           <q-item clickable v-ripple v-for="(author, index) in authorsList" :key="index" class="row items-center">
             <p class="q-mb-none col">{{ author.name }}</p>
-            <p class="q-mb-none col">{{ author.email }}</p>
+            <p class="q-mb-none col ellipsis">{{ author.email }}</p>
             <q-btn flat icon="more_vert">
               <q-menu>
                 <q-list class="page-authors-list">
@@ -55,11 +55,15 @@
           </q-item>
         </q-list>
 
-        <div v-else class="flex flex-center q-pt-xl">
-          Nenhum autor criado até o momento
+        <div v-if="!authorsList.length" class="flex flex-center q-pt-xl">
+          <p class="q-mb-lg">Ops... Nenhum autor encontrado</p>
+        </div>
+
+        <div v-if="hasPagination" class="q-pa-lg flex flex-center">
+          <q-pagination v-model="pagination._page" :max="5" direction-links boundary-links icon-first="skip_previous"
+          icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" @input="fetchAuthors(pagination)" />
         </div>
       </div>
-
     </q-page>
 </template>
 
@@ -70,14 +74,23 @@ export default {
   data () {
     return {
       text: '',
-      confirmDeleteData: false
+      confirmDeleteData: false,
+
+      pagination: {
+        _page: 1,
+        _limit: 10
+      }
     }
   },
 
   computed: {
     ...mapGetters({
       authorsList: 'authors/authorsList'
-    })
+    }),
+
+    hasPagination () {
+      return this.authorsList.length >= this.pagination._limit || this.pagination._page !== 1
+    }
   },
 
   methods: {
@@ -92,7 +105,7 @@ export default {
         message: 'Autor excluido com sucesso!',
         type: 'positive'
       })
-      this.fetchAuthors()
+      this.fetchAuthors(this.pagination)
     },
 
     confirmDelete () {
@@ -101,7 +114,7 @@ export default {
   },
 
   created () {
-    this.fetchAuthors()
+    this.fetchAuthors(this.pagination)
   }
 }
 </script>

@@ -31,7 +31,7 @@
               </q-item>
               <q-item>
                 <q-item-section>
-                  <q-input filled v-model="filters.postDate" :rules="['date']" class="q-mt-md">
+                  <q-input filled v-model="filters.postDate" class="q-mt-md">
                     <template v-slot:append>
                       <q-icon name="event" class="cursor-pointer">
                         <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -57,8 +57,9 @@
         </q-btn>
       </div>
     </div>
-    <div class="row q-col-gutter-md full-width q-my-lg">
-      <div v-for="(post, index) in postsList" :key="index" class="col-sm-3 col-12 page-posts-list__card">
+
+    <div class="row full-width q-my-lg" :class="postsListsContainer">
+      <div v-for="(post, index) in postsList" :key="index" class="col-sm-3 col-12 page-posts-list__card" :class="postsListsSize">
         <card-post :content="post" @click="acessPost(post.id)">
           <template v-slot:actions>
             <q-btn class="page-posts-list__edit-button absolute" flat icon="edit">
@@ -90,13 +91,13 @@
       </div>
     </div>
 
-    <div v-if="hasPagination" class="q-pa-lg flex flex-center">
-      <q-pagination v-model="currentPage" :max="5" direction-links boundary-links icon-first="skip_previous"
-      icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" />
+    <div v-if="!postsList.length" class="flex flex-center q-pt-xl">
+      <p class="q-mb-lg">Ops... Nenhum post encontrado.</p>
     </div>
 
-    <div v-else-if="!postsList.length" class="flex flex-center q-pt-xl">
-      Até o momento nenhuma postagem foi adicionada
+    <div v-if="hasPagination" class="q-pa-lg flex flex-center">
+      <q-pagination v-model="pagination._page" :max="5" direction-links boundary-links icon-first="skip_previous"
+      icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" @input="filterPost" />
     </div>
   </q-page>
 </template>
@@ -112,7 +113,6 @@ export default {
 
   data () {
     return {
-      currentPage: 1,
       categoryOptions: [
         'Esportes',
         'Tecnologia',
@@ -122,6 +122,11 @@ export default {
         'Exterior',
         'Outros'
       ],
+
+      pagination: {
+        _page: 1,
+        _limit: 8
+      },
 
       filters: {
         authorName: '',
@@ -152,7 +157,7 @@ export default {
         type: 'positive'
       })
 
-      await this.fetchPosts()
+      await this.fetchPosts(this.pagination)
     },
 
     acessPost (id) {
@@ -167,7 +172,7 @@ export default {
         }
       }
 
-      await this.fetchPosts(filter)
+      await this.fetchPosts({ ...this.pagination, ...filter })
     },
 
     clearFilters () {
@@ -175,7 +180,7 @@ export default {
         this.filters[objKey] = ''
       }
 
-      this.fetchPosts()
+      this.fetchPosts(this.pagination)
     }
   },
 
@@ -190,12 +195,20 @@ export default {
     },
 
     hasPagination () {
-      return this.postsList.length > 8
+      return this.postsList.length >= 8 || this.pagination._page !== 1
+    },
+
+    postsListsContainer () {
+      return this.$q.screen.gt.sm && 'q-col-gutter-md'
+    },
+
+    postsListsSize () {
+      return !this.$q.screen.gt.sm && 'q-mb-md'
     }
   },
 
   created () {
-    this.fetchPosts()
+    this.fetchPosts(this.pagination)
 
     this.fetchAuthors()
   }

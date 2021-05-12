@@ -1,7 +1,7 @@
 <template>
   <q-page class="bg-grey-2 q-pa-lg page-posts">
     <div>
-      <div class="text-h2 text-primary">{{ values.title }}</div>
+      <div class="text-primary" :class="titleClass">{{ values.title }}</div>
       <div class="text-subtitle1 q-my-sm text-grey-8">{{ values.shortDescription }}</div>
       <div class="text-caption">
         <p class="q-ma-none">Realizado por <span class="text-primary">{{ values.authorName }}</span></p>
@@ -15,10 +15,9 @@
 
     <q-separator color="primary" size="3px" />
 
-    <div class="q-my-md text-justify">
-      <img class="full-width" :src="values.mainImageURL" :alt="values.title">
-      <br>
-      <div v-html="values.mainText"></div>
+    <div :class="postContainer" class="q-my-md">
+      <img :class="imageSize" :src="values.mainImageURL" :alt="values.title">
+      <div v-html="values.mainText" class="text-justify" />
     </div>
   </q-page>
 </template>
@@ -55,6 +54,18 @@ export default {
   computed: {
     postId () {
       return this.$route.params.id
+    },
+
+    postContainer () {
+      return this.$q.screen.gt.sm && 'q-my-md'
+    },
+
+    imageSize () {
+      return this.$q.screen.gt.sm ? 'page-posts__image q-ml-md' : 'full-width q-my-md'
+    },
+
+    titleClass () {
+      return this.$q.screen.gt.sm ? 'text-h2' : 'text-h4 text-center'
     }
   },
 
@@ -68,6 +79,11 @@ export default {
   .page-posts {
     &__category {
       height: 20px
+    }
+
+    &__image {
+      width: 50%;
+      float: right;
     }
   }
 </style>
