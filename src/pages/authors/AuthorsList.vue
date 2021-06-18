@@ -10,10 +10,10 @@
             </q-breadcrumbs>
           </div>
         </div>
-        <q-btn icon="add" unelevated rounded color="primary" label="Adicionar autor" :to="{ name: 'AuthorsCreate' }" />
+        <q-btn icon="add" unelevated rounded color="primary" :label="buttonLabel" :to="{ name: 'AuthorsCreate' }" />
       </div>
       <div class="flex q-my-lg justify-between">
-        <q-input v-model="text" label="Procurar" class="page-posts-list__search col" />
+        <q-input v-model="filters.name" ebounce="1000" @input="filterAuthors" label="Procurar" class="page-posts-list__search col" />
       </div>
       <div class="full-width">
         <q-list v-if="authorsList.length" bordered class="rounded-borders q-mb-xs">
@@ -22,7 +22,7 @@
             <div class="q-mb-none col">E-mail</div>
           </div>
           <q-item clickable v-ripple v-for="(author, index) in authorsList" :key="index" class="row items-center">
-            <p class="q-mb-none col">{{ author.name }}</p>
+            <p class="q-mb-none col ellipsis">{{ author.name }}</p>
             <p class="q-mb-none col ellipsis">{{ author.email }}</p>
             <q-btn flat icon="more_vert">
               <q-menu>
@@ -60,7 +60,7 @@
         </div>
 
         <div v-if="hasPagination" class="q-pa-lg flex flex-center">
-          <q-pagination v-model="pagination._page" :max="5" direction-links boundary-links icon-first="skip_previous"
+          <q-pagination v-model="pagination._page" :max="2" direction-links boundary-links icon-first="skip_previous"
           icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" @input="fetchAuthors(pagination)" />
         </div>
       </div>
@@ -73,7 +73,10 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      text: '',
+      filters: {
+        name: ''
+      },
+
       confirmDeleteData: false,
 
       pagination: {
@@ -90,6 +93,10 @@ export default {
 
     hasPagination () {
       return this.authorsList.length >= this.pagination._limit || this.pagination._page !== 1
+    },
+
+    buttonLabel () {
+      return this.$q.screen.gt.sm ? 'Adicionar autor' : ''
     }
   },
 
@@ -110,6 +117,17 @@ export default {
 
     confirmDelete () {
       this.confirmDeleteData = true
+    },
+
+    async filterAuthors () {
+      const filter = {}
+      for (const key in this.filters) {
+        if (this.filters[key]) {
+          filter[`${key}_like`] = this.filters[key]
+        }
+      }
+
+      await this.fetchAuthors({ ...this.pagination, ...filter })
     }
   },
 

@@ -9,7 +9,7 @@ const getters = {
 }
 
 const mutations = {
-  fetchPosts (state, data) {
+  setPosts (state, data) {
     state.posts = data
   }
 }
@@ -23,7 +23,7 @@ const actions = {
         params
       })
 
-      commit('fetchPosts', data)
+      commit('setPosts', data)
     } catch {}
   },
 

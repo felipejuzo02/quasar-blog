@@ -11,12 +11,12 @@
             </q-breadcrumbs>
           </div>
         </div>
-        <q-btn icon="add" unelevated rounded color="primary" label="Adicionar post" :to="{ name: 'PostsCreate' }" />
+        <q-btn icon="add" unelevated rounded color="primary" :label="buttonLabel" :to="{ name: 'PostsCreate' }" />
       </div>
 
       <div class="flex q-my-lg justify-between">
         <q-input debounce="1000" @input="filterPost" v-model="filters.title" label="Procurar" class="page-posts-list__search col" />
-        <q-btn flat color="primary" label="Filtrar" icon="filter_list">
+        <q-btn flat color="primary" :label="buttonFilterLabel" icon="filter_list">
           <q-menu>
             <q-list class="page-post-list__filter-options">
               <q-item>
@@ -96,7 +96,7 @@
     </div>
 
     <div v-if="hasPagination" class="q-pa-lg flex flex-center">
-      <q-pagination v-model="pagination._page" :max="5" direction-links boundary-links icon-first="skip_previous"
+      <q-pagination v-model="pagination._page" :max="2" direction-links boundary-links icon-first="skip_previous"
       icon-last="skip_next" icon-prev="fast_rewind" icon-next="fast_forward" @input="filterPost" />
     </div>
   </q-page>
@@ -204,7 +204,16 @@ export default {
 
     postsListsSize () {
       return !this.$q.screen.gt.sm && 'q-mb-md'
+    },
+
+    buttonLabel () {
+      return this.$q.screen.gt.sm ? 'Adicionar post' : ''
+    },
+
+    buttonFilterLabel () {
+      return this.$q.screen.gt.sm ? 'Filtrar' : ''
     }
+
   },
 
   created () {

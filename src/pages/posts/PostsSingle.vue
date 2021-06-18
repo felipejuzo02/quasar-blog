@@ -5,7 +5,11 @@
       <div class="text-subtitle1 q-my-sm text-grey-8">{{ values.shortDescription }}</div>
       <div class="text-caption">
         <p class="q-ma-none">Realizado por <span class="text-primary">{{ values.authorName }}</span></p>
-        <p class="q-mb-none">Criado em {{ values.postDate }} | Editado em {{ values.editDate }}</p>
+        <div class="q-mb-none">
+          <p class="inline-block q-mr-xs">Criado em {{ values.postDate }}</p>
+          <p class="inline-block" v-if="values.editDate">| Editado em {{ values.editDate }}</p>
+        </div>
+
       </div>
     </div>
 
