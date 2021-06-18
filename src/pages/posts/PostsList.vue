@@ -213,7 +213,6 @@ export default {
     buttonFilterLabel () {
       return this.$q.screen.gt.sm ? 'Filtrar' : ''
     }
-
   },
 
   created () {
